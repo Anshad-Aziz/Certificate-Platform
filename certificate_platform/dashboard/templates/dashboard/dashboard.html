@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="animated-text text-center mb-4" style="color: #1e3a8a; text-shadow: 0 0 10px #60a5fa;">Dashboard</h2>
+    {% if messages %}
+        <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    
+    <div class="row g-4">
+        <!-- Subscription Details -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 animated-card" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1e3a8a;">Subscription Details</h5>
+                    {% if subscription %}
+                        <p class="card-text"><strong>Plan:</strong> {{ subscription.plan.name }}</p>
+                        <p class="card-text"><strong>Price:</strong> ${{ subscription.plan.price }}/month</p>
+                        <p class="card-text"><strong>Certificate Quota:</strong> {{ subscription.plan.certificate_quota }}</p>
+                        <p class="card-text"><strong>Certificates Used:</strong> {{ subscription.certificates_used }}</p>
+                        <p class="card-text"><strong>Subscription ID:</strong> {{ subscription.stripe_subscription_id }}</p>
+                        <p class="card-text"><strong>Status:</strong> {% if subscription.is_active %}<span class="badge bg-success">Active</span>{% else %}<span class="badge bg-danger">Inactive</span>{% endif %}</p>
+                        <p class="card-text"><strong>Start Date:</strong> {{ subscription.start_date|date:"Y-m-d" }}</p>
+                        <p class="card-text"><strong>End Date:</strong> {{ subscription.end_date|date:"Y-m-d"|default:"N/A" }}</p>
+                        <a href="{% url 'subscriptions:details' %}" class="btn btn-primary animated-button mt-2">View Details</a>
+                    {% else %}
+                        <p class="card-text text-muted">No active subscription.</p>
+                        <a href="{% url 'subscriptions:subscribe' plan_id=3 %}" class="btn btn-primary animated-button">Subscribe Now</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project Statistics -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 animated-card" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1e3a8a;">Project Statistics</h5>
+                    <p class="card-text"><strong>Candidates:</strong> {{ candidate_count }}</p>
+                    <p class="card-text"><strong>Certificates Issued:</strong> {{ certificate_count }}</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-3">
+                        <a href="{% url 'candidates:list' %}" class="btn btn-primary animated-button">View Candidates</a>
+                        <a href="{% url 'certificates:list' %}" class="btn btn-primary animated-button">View Certificates</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 animated-card" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1e3a8a;">Certificates Issued by Month</h5>
+                    <canvas id="certificateBarChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 animated-card" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1e3a8a;">Certificate Quota Usage</h5>
+                    <canvas id="quotaPieChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0 animated-card" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1e3a8a;">Candidate Registration Trends</h5>
+                    <canvas id="candidateLineChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js and Custom Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // Certificate Bar Chart
+    const certificateBarChart = new Chart(document.getElementById('certificateBarChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ certificate_months|safe }},
+            datasets: [{
+                label: 'Certificates Issued',
+                data: {{ certificate_counts|safe }},
+                backgroundColor: 'rgba(30, 58, 138, 0.7)',
+                borderColor: '#1e3a8a',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Certificates Issued by Month', color: '#1e3a8a' }
+            },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
+            }
+        }
+    });
+
+    // Quota Pie Chart
+    const quotaPieChart = new Chart(document.getElementById('quotaPieChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Used', 'Remaining'],
+            datasets: [{
+                data: [{{ subscription.certificates_used|default:0 }}, {{ subscription.plan.certificate_quota|default:0|add:"-subscription.certificates_used|default:0" }}],
+                backgroundColor: ['#1e3a8a', '#60a5fa'],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'Certificate Quota Usage', color: '#1e3a8a' }
+            }
+        }
+    });
+
+    // Candidate Line Chart
+    const candidateLineChart = new Chart(document.getElementById('candidateLineChart'), {
+        type: 'line',
+        data: {
+            labels: {{ candidate_months|safe }},
+            datasets: [{
+                label: 'Candidates Registered',
+                data: {{ candidate_counts|safe }},
+                borderColor: '#1e3a8a',
+                backgroundColor: 'rgba(30, 58, 138, 0.2)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Candidate Registration Trends', color: '#1e3a8a' }
+            },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
+            }
+        }
+    });
+</script>
+<style>
+    .animated-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .animated-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+    }
+    .animated-button {
+        background: linear-gradient(45deg, #1e3a8a, #60a5fa);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    .animated-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #60a5fa;
+    }
+    .animated-text {
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+        from { text-shadow: 0 0 5px #60a5fa; }
+        to { text-shadow: 0 0 15px #1e3a8a; }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 class="animated-text">Subscription Cancelled</h2>
+    {% if messages %}
+        <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <p>Your subscription was cancelled.</p>
+    <a href="{% url 'candidates:list' %}" class="btn btn-primary animated-button">Return to Candidates</a>
+</div>
+{% endblock %}

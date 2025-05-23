@@ -1,0 +1,133 @@
+/* Dashboard App Styles */
+body {
+    background: #2D0B59; /* Deep Neon Purple */
+    color: #FFFFFF; /* White */
+    font-family: 'Arial', sans-serif;
+}
+
+.card.dashboard-card {
+    background: linear-gradient(145deg, #1E0F3F, #302063); /* Dark Blue Gradient */
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.table {
+    background: #0F52BA; /* Neon Blue */
+    color: #FFFFFF;
+}
+
+.table th, .table td {
+    border-color: #CBA3F1; /* Soft Lilac */
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(203, 163, 241, 0.2); /* Soft Lilac with opacity */
+}
+
+.btn-primary {
+    background: #FF2DA8; /* Neon Pink */
+    border: none;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #CBA3F1; /* Soft Lilac */
+}
+
+.progress-bar {
+    background: #00FFC6; /* Neon Teal */
+}
+
+.text-muted {
+    color: #E1E1E1 !important; /* Light Gray */
+}
+
+canvas {
+    background: #1E0F3F; /* Dark Blue for chart backgrounds */
+    border-radius: 8px;
+    padding: 10px;
+}
+/* Neon Glow Animation */
+@keyframes neon-glow {
+    0% { box-shadow: 0 0 5px #FF2DA8, 0 0 10px #FF2DA8, 0 0 15px #FF2DA8; }
+    50% { box-shadow: 0 0 10px #FF2DA8, 0 0 20px #FF2DA8, 0 0 30px #FF2DA8; }
+    100% { box-shadow: 0 0 5px #FF2DA8, 0 0 10px #FF2DA8, 0 0 15px #FF2DA8; }
+}
+
+.neon-glow {
+    animation: neon-glow 1.5s ease-in-out infinite;
+}
+
+.btn.neon-hover:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+}
+
+.card.neon-hover:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s;
+}
+
+/* Theme Toggle Styles */
+body.light-theme {
+    background: #F5F5F5;
+    color: #333333;
+}
+
+body.light-theme .card {
+    background: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .table {
+    background: #FFFFFF;
+    color: #333333;
+}
+
+body.light-theme .btn-primary {
+    background: #007BFF;
+}
+
+body.light-theme .btn-primary:hover {
+    background: #0056B3;
+}
+
+body.light-theme .form-control, body.light-theme .form-select {
+    background: #FFFFFF;
+    color: #333333;
+    border: 1px solid #CCCCCC;
+}
+
+body.light-theme .text-muted {
+    color: #666666 !important;
+}
+
+body.light-theme .badge.bg-success {
+    background: #28A745 !important;
+    color: #FFFFFF;
+}
+
+body.light-theme .alert-success {
+    background: #D4EDDA;
+    color: #155724;
+    border-color: #C3E6CB;
+}
+
+body.light-theme canvas {
+    background: #FFFFFF;
+}
+
+/* Toast Styling */
+.toast {
+    background: linear-gradient(145deg, #1E0F3F, #302063);
+    color: #FFFFFF;
+    border: 1px solid #FF2DA8;
+}
+
+body.light-theme .toast {
+    background: #FFFFFF;
+    color: #333333;
+    border: 1px solid #007BFF;
+}

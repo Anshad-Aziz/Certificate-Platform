@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 class="animated-text">Subscribe to {{ plan.name }}</h2>
+    {% if messages %}
+        <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ plan.name }}</h5>
+            <p class="card-text">Price: ${{ plan.price }}/month</p>
+            <p class="card-text">Certificate Quota: {{ plan.certificate_quota }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary animated-button">Subscribe Now</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

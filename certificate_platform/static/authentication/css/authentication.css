@@ -1,0 +1,47 @@
+body {
+    background: #2D0B59;
+    color: #FFFFFF;
+    font-family: 'Arial', sans-serif;
+}
+.card {
+    background: linear-gradient(145deg, #1E0F3F, #302063);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.form-control {
+    background: #1E0F3F;
+    color: #E1E1E1;
+    border: 1px solid #0F52BA;
+}
+.form-control:focus {
+    border-color: #FF2DA8;
+    box-shadow: 0 0 5px rgba(255, 45, 168, 0.5);
+}
+.btn-primary {
+    background: #FF2DA8;
+    border: none;
+}
+.btn-primary:hover {
+    background: #CBA3F1;
+}
+.alert-success {
+    background: rgba(0, 255, 198, 0.2);
+    color: #FFFFFF;
+    border-color: #00FFC6;
+}
+.alert-danger {
+    background: rgba(255, 45, 168, 0.2);
+    color: #FFFFFF;
+    border-color: #FF2DA8;
+}
+.text-muted {
+    color: #E1E1E1 !important;
+}
+@keyframes neon-glow {
+    0% { box-shadow: 0 0 5px #FF2DA8, 0 0 10px #FF2DA8; }
+    50% { box-shadow: 0 0 10px #FF2DA8, 0 0 20px #FF2DA8; }
+    100% { box-shadow: 0 0 5px #FF2DA8, 0 0 10px #FF2DA8; }
+}
+.neon-glow:hover {
+    animation: neon-glow 1.5s ease-in-out infinite;
+}

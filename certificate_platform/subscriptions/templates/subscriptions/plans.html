@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Choose Your Pricing Plan</h2>
+        <div class="row">
+            {% for plan in plans %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">{{ plan.get_name_display }}</h3>
+                        <p class="card-text">{{ plan.description }}</p>
+                        <h4 class="text-primary">${{ plan.monthly_price }}/month</h4>
+                        <p><strong>Certificates:</strong> {{ plan.certificate_limit }}/month</p>
+                        <a href="{% url 'subscriptions:subscribe' plan.id %}" class="btn btn-primary">Choose Plan</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No pricing plans available at this time.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'authentication:company_profile' %}" class="btn btn-outline-secondary">Back to Profile</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
