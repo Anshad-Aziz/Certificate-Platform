@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 mb-3 animated-text">Automate Certificate Generation & Verification</h1>
+        <p class="lead mb-4">Create, manage, and verify certificates for your students or employees with our powerful platform. Save time and ensure authenticity with automated certificate generation and QR code verification.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'authentication:register' %}" class="btn btn-primary btn-lg animated-button">Get Started</a>
+            <a href="{% url 'verification:verify' %}" class="btn btn-outline-primary btn-lg">Verify a certificate →</a>
+        </div>
+        <p class="mt-4">Trusted by companies like</p>
+        <div class="d-flex justify-content-center gap-4">
+            <span>JumpWhere</span>
+            <span>Mangalore Institute of Technology & Engineering</span>
+            <span>Tata Consultancy Services</span>
+        </div>
+    </div>
+</section>
+
+<!-- Certificate Preview Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="animated-text">Certificate of Completion</h2>
+                <div class="certificate-preview mx-auto">
+                    <h4>This certifies that</h4>
+                    <h3>Anshad Aziz</h3>
+                    <p>has successfully completed</p>
+                    <h4>Full Stack Development Internship</h4>
+                    <p>at</p>
+                    <h4>JumpWhere</h4>
+                    <p><strong>ISSUED ON</strong><br>March 1, 2025</p>
+                    <p><strong>CERTIFICATE ID</strong><br>CP-2025-XYZ789</p>
+                </div>
+            </div>
+            
+
+            <div class="col-md-6">
+                <h2 class="animated-text">Powerful Features for Certificate Management</h2>
+                <p>Our platform simplifies the entire certificate lifecycle from creation to verification</p>
+                <div class="row">
+                    <div class="col-md-6 feature-card">
+                        <h5>Automated Certificate Generation</h5>
+                        <p>Generate professional certificates in bulk with custom templates and dynamic fields.</p>
+                    </div>
+                    <div class="col-md-6 feature-card">
+                        <h5>QR Code Verification</h5>
+                        <p>Each certificate includes a unique QR code for instant verification of authenticity.</p>
+                    </div>
+                    <div class="col-md-6 feature-card">
+                        <h5>Template Management</h5>
+                        <p>Upload and customize certificate templates with your branding and dynamic fields.</p>
+                    </div>
+                    <div class="col-md-6 feature-card">
+                        <h5>Candidate Management</h5>
+                        <p>Import candidate details via Excel or add them manually with comprehensive tracking.</p>
+                    </div>
+                    <div class="col-md-6 feature-card">
+                        <h5>Detailed Analytics</h5>
+                        <p>Track certificate usage, view reports, and analyze trends with interactive dashboards.</p>
+                    </div>
+                    <div class="col-md-6 feature-card">
+                        <h5>Email Delivery</h5>
+                        <p>Automatically send certificates to recipients via email with personalized messages.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 animated-text">Simple, Transparent Pricing</h2>
+        <p class="text-center mb-5">Choose the plan that fits your certificate management needs</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="pricing-card">
+                    <h3>Basic</h3>
+                    <h2>$29 <small>/month</small></h2>
+                    <p>Perfect for small organizations with minimal certificate needs</p>
+                    <ul class="list-unstyled">
+                        <li>50 certificates/month</li>
+                        <li>2 certificate templates</li>
+                        <li>Email delivery</li>
+                        <li>Basic dashboard</li>
+                        <li>QR code verification</li>
+                        <li>Customer support</li>
+                    </ul>
+                    <a href="{% url 'authentication:register' %}" class="btn btn-primary animated-button">Get Started</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing-card popular">
+                    <h3>Professional</h3>
+                    <h2>$79 <small>/month</small></h2>
+                    <p>Ideal for growing organizations with moderate certificate needs</p>
+                    <ul class="list-unstyled">
+                        <li>100 certificates/month</li>
+                        <li>3 certificate templates</li>
+                        <li>Email & direct download</li>
+                        <li>Advanced dashboard</li>
+                        <li>QR code verification</li>
+                        <li>Priority customer support</li>
+                    </ul>
+                    <a href="{% url 'authentication:register' %}" class="btn btn-primary animated-button">Get Started</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <h2>$199 <small>/month</small></h2>
+                    <p>For large organizations with extensive certificate requirements</p>
+                    <ul class="list-unstyled">
+                        <li>100+ certificates/month</li>
+                        <li>5 certificate templates</li>
+                        <li>All delivery methods</li>
+                        <li>Complete dashboard & analytics</li>
+                        <li>QR code verification</li>
+                        <li>Dedicated account manager</li>
+                    </ul>
+                    <a href="{% url 'authentication:register' %}" class="btn btn-primary animated-button">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 animated-text">Trusted by Leading Organizations</h2>
+        <p class="text-center mb-5">See what our customers have to say about our certificate management platform</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p>"This platform completely transformed how we manage certificates for our internship program. What used to take days now takes minutes."</p>
+                    <p><strong>Sarah Johnson</strong><br>HR Director, TechNova Inc.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p>"The QR code verification feature has greatly enhanced the credibility of our certificates. Our students love the professional look and easy verification."</p>
+                    <p><strong>Michael Chen</strong><br>Training Manager, Global Innovate</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p>"We've reduced certificate generation time by 90% while improving quality. The analytics dashboard gives us insights we never had before."</p>
+                    <p><strong>Priya Patel</strong><br>Operations Lead, FuturePath</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section text-center">
+    <div class="container">
+        <h2 class="mb-4 animated-text">Ready to streamline your certificate management?</h2>
+        <p class="mb-4">Join hundreds of organizations that trust our platform for their certificate needs</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'authentication:register' %}" class="btn btn-light btn-lg animated-button">Start your free trial</a>
+            <a href="{% url 'authentication:register' %}" class="btn btn-outline-light btn-lg">Contact sales</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

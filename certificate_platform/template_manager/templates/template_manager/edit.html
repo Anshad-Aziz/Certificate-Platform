@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2>Edit Template</h2>
+        {% if messages %}
+            <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Template Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ template.name }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="html_content" class="form-label">HTML Content</label>
+                <textarea class="form-control" id="html_content" name="html_content" rows="10">{{ template.html_content }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="css_content" class="form-label">CSS Content</label>
+                <textarea class="form-control" id="css_content" name="css_content" rows="5">{{ template.css_content }}</textarea>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="is_default" name="is_default" {% if template.is_default %}checked{% endif %}>
+                <label class="form-check-label" for="is_default">Set as Default</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'template_manager:preview' template.id %}" class="btn btn-secondary">Preview</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

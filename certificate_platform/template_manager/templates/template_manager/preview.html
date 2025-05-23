@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { size: A4; margin: 1in; }
+        {{ template.css_content|safe }}
+        body { font-family: Arial, sans-serif; }
+        .certificate { border: 2px solid #000; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        {{ template.html_content|safe }}
+        <p>Awarded to: {{ certificate.recipient_name }}</p>
+        <p>Course: {{ certificate.course_title }}</p>
+        <p>Issued by: {{ certificate.company.company_name }}</p>
+        <p>Issue Date: {{ certificate.issue_date }}</p>
+        <p>Certificate ID: {{ certificate.certificate_id }}</p>
+    </div>
+</body>
+</html>

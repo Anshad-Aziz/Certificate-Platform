@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2>Delete Certificate Template</h2>
+        {% if messages %}
+            <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="card shadow">
+            <div class="card-body">
+                <p>Are you sure you want to delete the template "{{ template.name }}"?</p>
+                <form method="post" action="{% url 'template_manager:delete' template.id %}">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                        <a href="{% url 'template_manager:list' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

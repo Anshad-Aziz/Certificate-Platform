@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 class="animated-text">Verify Certificate</h2>
+    {% if messages %}
+        <div class="alert alert-dismissible fade show">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card animated-card">
+                <div class="card-body">
+                    <h5 class="card-title">Scan QR Code or Enter Certificate ID</h5>
+                    <p class="instructions">Use your camera to scan the QR code on the certificate or upload an image. Alternatively, enter the Certificate ID manually.</p>
+                    <div class="qr-scanner">
+                        <video id="qr-video" aria-label="QR code scanner"></video>
+                        <canvas id="qr-canvas"></canvas>
+                        <div id="qr-loading" class="spinner-border" role="status">
+                            <span class="visually-hidden">Scanning...</span>
+                        </div>
+                        <p id="qr-result">Position the QR code within the frame to scan.</p>
+                        <div class="mb-3">
+                            <label for="qr-image" class="form-label">Upload QR Code Image</label>
+                            <input type="file" class="form-control" id="qr-image" accept="image/*" aria-describedby="qrImageHelp">
+                            <div id="qrImageHelp" class="form-text">Upload an image of the QR code if camera access is unavailable.</div>
+                        </div>
+                    </div>
+                    <form id="verify-form" action="{% url 'verification:verify' %}" method="post" aria-label="Certificate verification form">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="certificate_id" class="form-label">Certificate ID</label>
+                            <input type="text" class="form-control" id="certificate_id" name="certificate_id" placeholder="e.g., 188d6eb0-1cb4-4c93-8974-3783468f1dad" aria-required="true">
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary animated-button">Verify Certificate</button>
+                            <button type="button" class="btn btn-secondary animated-button" id="clear-form">Clear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script>
+    const video = document.getElementById('qr-video');
+    const canvasElement = document.getElementById('qr-canvas');
+    const canvas = canvasElement.getContext('2d');
+    const qrResult = document.getElementById('qr-result');
+    const qrLoading = document.getElementById('qr-loading');
+    const certificateIdInput = document.getElementById('certificate_id');
+    const verifyForm = document.getElementById('verify-form');
+    const qrImageInput = document.getElementById('qr-image');
+    const clearButton = document.getElementById('clear-form');
+
+    function startScanner() {
+        qrLoading.style.display = 'block';
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(stream => {
+                video.srcObject = stream;
+                video.setAttribute('playsinline', true);
+                video.play();
+                qrLoading.style.display = 'none';
+                requestAnimationFrame(tick);
+            })
+            .catch(err => {
+                qrLoading.style.display = 'none';
+                qrResult.textContent = 'Camera access denied. Please upload an image or enter the Certificate ID manually.';
+                console.error(err);
+            });
+    }
+
+    function tick() {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvasElement.height = video.videoHeight;
+            canvasElement.width = video.videoWidth;
+            canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+            const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+            if (code) {
+                const url = code.data;
+                const certificateIdMatch = url.match(/\/certificates\/verify\/([0-9a-f-]+)/);
+                if (certificateIdMatch) {
+                    const certificateId = certificateIdMatch[1];
+                    certificateIdInput.value = certificateId;
+                    qrResult.textContent = `Scanned Certificate ID: ${certificateId}`;
+                    video.srcObject.getTracks().forEach(track => track.stop());
+                    setTimeout(() => verifyForm.submit(), 1000);
+                    return;
+                } else {
+                    qrResult.textContent = 'Invalid QR code. Please try again.';
+                }
+            }
+        }
+        requestAnimationFrame(tick);
+    }
+
+    qrImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const img = new Image();
+            img.onload = () => {
+                canvasElement.width = img.width;
+                canvasElement.height = img.height;
+                canvas.drawImage(img, 0, 0);
+                const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                if (code) {
+                    const url = code.data;
+                    const certificateIdMatch = url.match(/\/certificates\/verify\/([0-9a-f-]+)/);
+                    if (certificateIdMatch) {
+                        certificateIdInput.value = certificateIdMatch[1];
+                        qrResult.textContent = `Scanned Certificate ID: ${certificateIdMatch[1]}`;
+                        setTimeout(() => verifyForm.submit(), 1000);
+                    } else {
+                        qrResult.textContent = 'Invalid QR code in image. Please try another.';
+                    }
+                } else {
+                    qrResult.textContent = 'No QR code found in image. Please try another.';
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    });
+
+    clearButton.addEventListener('click', () => {
+        certificateIdInput.value = '';
+        qrResult.textContent = 'Position the QR code within the frame to scan.';
+        qrImageInput.value = '';
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        startScanner();
+    });
+
+    document.addEventListener('DOMContentLoaded', startScanner);
+</script>
+{% endblock %}

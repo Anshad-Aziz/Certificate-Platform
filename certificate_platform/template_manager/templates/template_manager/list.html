@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2>Certificate Templates</h2>
+        <a href="{% url 'template_manager:create' %}" class="btn btn-primary mb-3">Create Template</a>
+        {% if messages %}
+            <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Default</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for template in templates %}
+                    <tr>
+                        <td>{{ template.name }}</td>
+                        <td>{% if template.is_default %}Yes{% else %}No{% endif %}</td>
+                        <td>
+                            <a href="{% url 'template_manager:edit' template.id %}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{% url 'template_manager:preview' template.id %}" class="btn btn-secondary btn-sm">Preview</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 class="animated-text">Verification Result</h2>
+    {% if messages %}
+        <div class="alert alert-dismissible fade show">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card animated-card">
+                <div class="card-body">
+                    {% if certificate %}
+                        <h5 class="card-title">Certificate Verified</h5>
+                        <div class="qr-code">
+                            <img src="{{ SITE_URL }}{{ certificate.qr_code_url }}" alt="QR Code">
+                            <p>QR Code Verified: {{ certificate.certificate_id }}</p>
+                        </div>
+                        <div class="details">
+                            <p><strong>Recipient:</strong> {{ certificate.recipient_name }}</p>
+                            <p><strong>Program:</strong> {{ certificate.course_title }}</p>
+                            <p><strong>Issue Date:</strong> {{ certificate.issue_date }}</p>
+                            <p><strong>Certificate ID:</strong> {{ certificate.certificate_id }}</p>
+                            {% if certificate.supervisor_name %}
+                                <p><strong>Supervisor:</strong> {{ certificate.supervisor_name }}</p>
+                            {% endif %}
+                            <p><strong>Issued by:</strong> {{ certificate.company.company_name }}</p>
+                            {% if certificate.start_date %}
+                                <p><strong>Duration:</strong> {{ certificate.start_date }} to {{ certificate.expiry_date|default:"Ongoing" }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="action-buttons">
+                            <a href="{% url 'certificates:download' certificate.certificate_id %}" class="btn btn-primary animated-button">Download Certificate</a>
+                            <a href="{% url 'certificates:verify' %}" class="btn btn-secondary animated-button">Verify Another</a>
+                        </div>
+                    {% else %}
+                        <h5 class="card-title">Certificate Not Found</h5>
+                        <p>The provided Certificate ID is invalid or does not exist.</p>
+                        <div class="action-buttons">
+                            <a href="{% url 'certificates:verify' %}" class="btn btn-primary animated-button">Try Again</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
