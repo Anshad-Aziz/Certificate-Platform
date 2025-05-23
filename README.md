@@ -95,12 +95,9 @@ This platform addresses these challenges by offering automation, online verifica
   - ER Diagram & DB Schema
   - Module-wise walkthrough video
   - Setup instructions
+    
+[![Watch the Demo]](https://drive.google.com/file/d/1ocPVwqSKPzNStA_FK5AC5HiqKG5xGF40/view?usp=drive_link)
 
-## ✨ Bonus Features (Optional)
-
-- Email PDF to recipients
-- Role-based access for company teams
-- Alerts for upcoming plan expiries
 
 ## 🔗 Reference
 
