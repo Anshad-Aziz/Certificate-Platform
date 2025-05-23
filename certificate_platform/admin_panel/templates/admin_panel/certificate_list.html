@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2>Manage Certificates</h2>
+        {% if messages %}
+            <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Certificate ID</th>
+                    <th>Recipient</th>
+                    <th>Course</th>
+                    <th>Company</th>
+                    <th>Issue Date</th>
+                    <th>Valid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for certificate in certificates %}
+                <tr>
+                    <td>{{ certificate.certificate_id }}</td>
+                    <td>{{ certificate.recipient_name }}</td>
+                    <td>{{ certificate.course_title }}</td>
+                    <td>{{ certificate.company.company_name }}</td>
+                    <td>{{ certificate.issue_date|date:"Y-m-d" }}</td>
+                    <td>{{ certificate.is_valid|yesno:"Yes,No" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No certificates found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center">
+            <a href="{% url 'admin_panel:dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
