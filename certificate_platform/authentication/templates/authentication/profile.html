@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Your Profile</h2>
+                        {% if messages %}
+                            <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <form method="post" action="{% url 'authentication:profile' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone_number" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ user.phone_number }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">New Password (leave blank to keep current)</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3">
+                            <p>Manage your company details? <a href="{% url 'authentication:company_profile' %}">Company Profile</a></p>
+                            <p><a href="{% url 'authentication:logout' %}">Logout</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

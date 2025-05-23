@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2>Candidates</h2>
+        {% if messages %}
+            <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <a href="{% url 'candidates:create' %}" class="btn btn-primary mb-3">Add New Candidate</a>
+        <a href="{% url 'candidates:upload' %}" class="btn btn-primary mb-3 ">Upload Candidates</a>
+       
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidate in candidates %}
+                <tr>
+                    <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
+                    <td>{{ candidate.email }}</td>
+                    <td>{{ candidate.phone_number|default:"N/A" }}</td>
+                    <td>{{ candidate.created_at|date:"Y-m-d" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No candidates found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
