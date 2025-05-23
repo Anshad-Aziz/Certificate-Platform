@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Certificate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+    @page {
+        size: A4;
+        margin: 1in;
+    }
+    body {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: #000000;
+    }
+    .logo-container {
+    position:absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+   }
+
+   
+    .certificate {
+        width: 100%;
+        max-width: 794px;
+        height: 1123px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 8px solid #FFD700; /* Yellow border */
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        padding: 40px;
+        box-sizing: border-box;
+    }
+    .certificate::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(255, 255, 255, 0.6)); /* Soft yellow overlay */
+        z-index: 0;
+    }
+    .certificate-content {
+        position: relative;
+        z-index: 1;
+    }
+    .header {
+        margin-bottom: 30px;
+    }
+    .header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 48px;
+        color: #000000;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .header p {
+        font-size: 18px;
+        color: #333333;
+        margin: 5px 0;
+    }
+    .recipient {
+        margin: 20px 0;
+    }
+    .recipient h2 {
+        font-size: 32px;
+        color: #000000;
+        margin: 0;
+        font-weight: 700;
+    }
+    .details {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333333;
+        margin: 20px 0;
+    }
+    .details p {
+        margin: 8px 0;
+    }
+    .qr-code {
+        margin-top: 30px;
+    }
+    .qr-code img {
+        width: 120px;
+        border: 2px solid #FFD700;
+        border-radius: 5px;
+    }
+    .footer {
+        position: absolute;
+        bottom: 40px;
+        left: 40px;
+        right: 40px;
+        font-size: 14px;
+        color: #555555;
+        display: flex;
+        justify-content: space-between;
+    }
+    .logo {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        width: 100px;
+    }
+    .signature {
+        margin-top: 20px;
+    }
+    .signature img {
+        width: 150px;
+    }
+    @media print {
+        body {
+            background: none;
+        }
+        .certificate {
+            box-shadow: none;
+            border: none;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="certificate">
+        
+        <div class="certificate-content">
+            
+            <div class="header">
+                <h1>Certificate of Internship</h1>
+                <p>Proudly Presented by {{ certificate.company.company_name }}</p>
+            </div>
+            <div class="recipient">
+                <h2>{{ certificate.recipient_name }}</h2>
+                <p>Has successfully completed an internship program</p>
+            </div>
+            <div class="details">
+                <p><strong>Program:</strong> {{ certificate.course_title }}</p>
+                <p><strong>Duration:</strong> 3 Months</p>
+                <p><strong>Supervisor:</strong> Mr. Mohamad Saqib</p>
+                <p><strong>Issue Date:</strong> {{ certificate.issue_date }}</p>
+                <p><strong>Certificate ID:</strong> {{ certificate.certificate_id }}</p>
+                
+                
+            </div>
+            {% if qr_code_url %}
+                <div class="qr-code">
+                    <img src="{{ SITE_URL }}{{ qr_code_url }}" alt="QR Code">
+                </div>
+            {% endif %}
+           
+                <div class="signature">
+                    <img src="{% static 'images/sign.png' %}" alt="Signature">
+                    <p>Authorized Signatory</p>
+                </div>
+           
+            
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2>Certificates</h2>
+        <a href="{% url 'certificates:generate' %}" class="btn btn-primary mb-3">Generate Certificate</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Recipient</th>
+                    <th>Course</th>
+                    <th>Issue Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for certificate in certificates %}
+                    <tr>
+                        <td>{{ certificate.recipient_name }}</td>
+                        <td>{{ certificate.course_title }}</td>
+                        <td>{{ certificate.issue_date }}</td>
+                        <td>
+                            <a href="{% url 'certificates:download' certificate.certificate_id %}" class="btn btn-primary btn-sm">Download PDF</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

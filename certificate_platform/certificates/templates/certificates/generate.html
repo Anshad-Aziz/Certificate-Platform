@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2>Generate Certificate</h2>
+        {% if messages %}
+            <div class="alert {% if 'success' in messages.tags %}alert-success{% else %}alert-danger{% endif %}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="card shadow">
+            <div class="card-body">
+                <form method="post" action="{% url 'certificates:generate' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="candidate_id" class="form-label">Select Candidate</label>
+                        <select class="form-select" id="candidate_id" name="candidate_id" required>
+                            <option value="" disabled selected>Choose a candidate</option>
+                            {% for candidate in candidates %}
+                                <option value="{{ candidate.id }}">{{ candidate.first_name }} {{ candidate.last_name }} ({{ candidate.email }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="template_id" class="form-label">Select Template (Optional)</label>
+                        <select class="form-select" id="template_id" name="template_id">
+                            <option value="" selected>Default or None</option>
+                            {% for template in templates %}
+                                <option value="{{ template.id }}">{{ template.name }} {% if template.is_default %}(Default){% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="course_title" class="form-label">Course Title</label>
+                        <input type="text" class="form-control" id="course_title" name="course_title" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Generate Certificate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="{% url 'certificates:list' %}" class="btn btn-outline-secondary">Back to Certificates</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
